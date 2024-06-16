@@ -39,42 +39,65 @@ The **Medi_demo** application is a RESTful service API for managing member data 
    cd Medi_demo
    ```
 
-2. **Set up the PostgreSQL database**:
+2. **Set up PostgreSQL**:
 
-   - Ensure PostgreSQL is installed and running.
-   - Create a new database named `medication_db`.
+   - **Install PostgreSQL**:
+     - Download and install PostgreSQL from [the official website](https://www.postgresql.org/download/).
+     - Follow the installation instructions for your operating system.
 
-     ```sql
-     CREATE DATABASE medication_db;
-     ```
+   - **Start PostgreSQL**:
+     - On Windows, you can start PostgreSQL using `pgAdmin` or by running the PostgreSQL server from the Start menu.
+     - On macOS or Linux, you can start PostgreSQL using the terminal with the command:
+       ```bash
+       sudo service postgresql start
+       ```
 
-   - Create the required tables:
+   - **Create a new database**:
+     - Open a terminal or `pgAdmin` and run the following commands to create a database:
+       ```sql
+       CREATE DATABASE medication_db;
+       ```
+     - To connect to the database and use SQL commands, run:
+       ```bash
+       psql -U your_username -d medication_db
+       ```
+       Replace `your_username` with your PostgreSQL username.
 
-     ```sql
-     CREATE TABLE member (
-         id SERIAL PRIMARY KEY,
-         first_name VARCHAR(255),
-         last_name VARCHAR(255),
-         phone_number VARCHAR(20),
-         dob DATE,
-         demographics VARCHAR(255)
-     );
+   - **Create required tables**:
+     - Once connected to the `medication_db` database, create the tables by running:
+       ```sql
+       CREATE TABLE member (
+           id SERIAL PRIMARY KEY,
+           first_name VARCHAR(255),
+           last_name VARCHAR(255),
+           phone_number VARCHAR(20),
+           dob DATE,
+           demographics VARCHAR(255)
+       );
 
-     CREATE TABLE claim (
-         id SERIAL PRIMARY KEY,
-         claim_date DATE,
-         medication VARCHAR(255),
-         pharmacy_name VARCHAR(255),
-         status VARCHAR(20),
-         member_id INTEGER REFERENCES member(id)
-     );
-     ```
+       CREATE TABLE claim (
+           id SERIAL PRIMARY KEY,
+           claim_date DATE,
+           medication VARCHAR(255),
+           pharmacy_name VARCHAR(255),
+           status VARCHAR(20),
+           member_id INTEGER REFERENCES member(id)
+       );
+       ```
 
-3. **Load initial data**:
+   - **Load initial data**:
+     - Use the `medication_db.sql` script provided in the project to load initial data into the tables. To load the data, you can use the following command in the terminal:
+       ```bash
+       psql -U your_username -d medication_db -f path/to/medication_db.sql
+       ```
+       Replace `your_username` with your PostgreSQL username and `path/to/medication_db.sql` with the actual path to your `medication_db.sql` file.
 
-   - (Optional) You can load initial data into the tables for testing. Refer to the provided `medication_db.sql` script in the project directory.
+       For example, if `medication_db.sql` is in the project root directory, you might run:
+       ```bash
+       psql -U your_username -d medication_db -f medication_db.sql
+       ```
 
-4. **Configure the application properties**:
+3. **Configure the application properties**:
 
    - Open the `application.properties` file located in `src/main/resources` and set your PostgreSQL database connection details.
 
@@ -83,14 +106,15 @@ The **Medi_demo** application is a RESTful service API for managing member data 
      spring.datasource.username=your_username
      spring.datasource.password=your_password
      ```
+     Replace `your_username` and `your_password` with your actual PostgreSQL credentials.
 
-5. **Build and run the application**:
+4. **Build and run the application**:
 
    ```bash
    ./gradlew bootRun
    ```
 
-6. **Access the Swagger UI**:
+5. **Access the Swagger UI**:
 
    - Open your web browser and go to `http://localhost:8080/swagger-ui.html` to interact with the API.
 
@@ -115,3 +139,7 @@ The **Medi_demo** application is a RESTful service API for managing member data 
 
 - Use Swagger or Postman to test the API endpoints.
 - Use the provided `medication_db.sql` to load initial data for testing.
+
+## License
+
+This project is licensed under the MIT License.
