@@ -46,7 +46,7 @@ The **Medi_demo** application is a RESTful service API for managing member data 
      - Follow the installation instructions for your operating system.
 
    - **Start PostgreSQL**:
-     - On Windows, you can start PostgreSQL using `pgAdmin` or by running the PostgreSQL server from the Start menu.
+     - On Windows, you can start PostgreSQL using `pgAdmin` or by running the PostgreSQL server from the Start menu. Just search `psql` in the Start menu.
      - On macOS or Linux, you can start PostgreSQL using the terminal with the command:
        ```bash
        sudo service postgresql start
