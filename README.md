@@ -35,7 +35,7 @@ The **Medi_demo** application is a RESTful service API for managing member data 
 1. **Clone the repository**:
 
    ```bash
-   git clone https://github.com/your-username/Medi_demo.git
+   git clone https://github.com/SrujanGutta/Medi_demo.git
    cd Medi_demo
    ```
 
