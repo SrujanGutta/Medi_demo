@@ -139,7 +139,3 @@ The **Medi_demo** application is a RESTful service API for managing member data 
 
 - Use Swagger or Postman to test the API endpoints.
 - Use the provided `medication_db.sql` to load initial data for testing.
-
-## License
-
-This project is licensed under the MIT License.
