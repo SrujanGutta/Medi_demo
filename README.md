@@ -129,7 +129,6 @@ The **Medi_demo** application is a RESTful service API for managing member data 
 
 ### Claims
 
-- **GET /claims**: Retrieve all claims.
 - **POST /claims**: Add a new claim to an existing member.
 - **PUT /claims/{id}**: Update the status of a claim.
 - **DELETE /claims/{id}**: Delete an existing claim.
