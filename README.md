@@ -125,9 +125,7 @@ The **Medi_demo** application is a RESTful service API for managing member data 
 ### Members
 
 - **GET /members**: Retrieve all member records with claims after `01/01/2024`.
-- **POST /members**: Create a new member.
-- **PUT /members/{id}**: Update an existing member's information.
-- **DELETE /members/{id}**: Delete an existing member.
+- **PUT /members**: Create a new member.
 
 ### Claims
 
