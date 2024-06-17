@@ -51,20 +51,8 @@ The **Medi_demo** application is a RESTful service API for managing member data 
        ```bash
        sudo service postgresql start
        ```
-
-   - **Load initial data**:
-     - Use the `medication_db.sql` script provided in the project to load initial data into the tables. To load the data, you can use the following command in the terminal:
-       ```bash
-       psql -U your_username -d medication_db -f path/to/medication_db.sql
-       ```
-       Replace `your_username` with your PostgreSQL username and `path/to/medication_db.sql` with the actual path to your `medication_db.sql` file.
-
-       For example, if `medication_db.sql` is in the project root directory, you might run:
-       ```bash
-       psql -U your_username -d medication_db -f medication_db.sql
-       ```
-
-   - **Create a new database** (Optional):
+       
+   - **Create a new database**:
      - Open a terminal or `pgAdmin` and run the following commands to create a database:
        ```sql
        CREATE DATABASE medication_db;
@@ -75,7 +63,7 @@ The **Medi_demo** application is a RESTful service API for managing member data 
        ```
        Replace `your_username` with your PostgreSQL username.
 
-   - **Create required tables** (Optional):
+   - **Create required tables**:
      - Once connected to the `medication_db` database, create the tables by running:
        ```sql
        CREATE TABLE member (
@@ -97,7 +85,17 @@ The **Medi_demo** application is a RESTful service API for managing member data 
        );
        ```
 
+   - **Load initial data**:
+     - Use the `medication_db.sql` script provided in the project to load initial data into the tables. To load the data, you can use the following command in the terminal:
+       ```bash
+       psql -U your_username -d medication_db -f path/to/medication_db.sql
+       ```
+       Replace `your_username` with your PostgreSQL username and `path/to/medication_db.sql` with the actual path to your `medication_db.sql` file.
 
+       For example, if `medication_db.sql` is in the project root directory, you might run:
+       ```bash
+       psql -U your_username -d medication_db -f medication_db.sql
+       ```
 
 3. **Configure the application properties**:
 
