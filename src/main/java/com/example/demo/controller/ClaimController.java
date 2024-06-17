@@ -7,7 +7,7 @@ import com.example.demo.repository.MemberRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +15,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 @RestController
 public class ClaimController {
     @Autowired
@@ -37,20 +41,26 @@ public class ClaimController {
         }
         return new ResponseEntity<>(claims, HttpStatus.OK);
     }
+
     @Operation(summary = "Add a new claim to an existing member")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Claim added successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid status"),
             @ApiResponse(responseCode = "404", description = "Member not found")
     })
     @PostMapping("/claims")
     public ResponseEntity<String> addClaimToMember(@RequestBody ClaimRequestDto claimRequestDto) {
         Long memberId = claimRequestDto.getMemberId();
+        String status = claimRequestDto.getStatus();
         if (!memberRepository.existsById(memberId)) {
             return new ResponseEntity<>("Member not found", HttpStatus.NOT_FOUND);
         }
         Member member = memberRepository.findById(memberId).orElse(null);
         if (member == null) {
             return new ResponseEntity<>("Member not found", HttpStatus.NOT_FOUND);
+        }
+        if (!status.equals("SUBMITTED") || !status.equals("APPROVED") || !status.equals("DENIED")) {
+            return new ResponseEntity<>("Claims can only have status 'SUBMITTED', 'APPROVED', or 'DENIED'", HttpStatus.BAD_REQUEST);
         }
         Claim claim = new Claim();
         claim.setMember(member);
@@ -67,16 +77,21 @@ public class ClaimController {
             @ApiResponse(responseCode = "400", description = "Invalid status"),
             @ApiResponse(responseCode = "404", description = "Claim not found")
     })
-    @PutMapping("/claims/update-status/{claimId}")
+    @PostMapping("/claims/update-status/{claimId}")
     public ResponseEntity<String> updateClaimStatus(@PathVariable Long claimId, @RequestParam String newStatus) {
         Claim claim = claimRepository.findById(claimId).orElse(null);
         if (claim == null) {
             return new ResponseEntity<>("Claim not found", HttpStatus.NOT_FOUND);
         }
+
         if (!newStatus.equalsIgnoreCase("APPROVED") && !newStatus.equalsIgnoreCase("DENIED")) {
             return new ResponseEntity<>("Status must be 'APPROVED' or 'DENIED'", HttpStatus.BAD_REQUEST);
         }
-        claim.setStatus(newStatus);
+        if (!claim.getStatus().equalsIgnoreCase("SUBMITTED")) {
+            return new ResponseEntity<>("Only claims with 'SUBMITTED' status can be updated", HttpStatus.BAD_REQUEST);
+        }
+
+        claim.setStatus(newStatus.toUpperCase());
         claimRepository.save(claim);
         return new ResponseEntity<>("Claim status updated successfully", HttpStatus.OK);
     }

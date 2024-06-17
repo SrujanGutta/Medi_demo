@@ -1,13 +1,27 @@
 package com.example.demo.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDate;
 
 public class ClaimRequestDto {
+
+    @JsonProperty("memberId")
     private Long memberId;
+
+    @JsonProperty("claimDate")
     private LocalDate claimDate;
+
+    @JsonProperty("status")
     private String status;
+
+    @JsonProperty("medication")
     private String medication;
+
+    @JsonProperty("pharmacyName")
     private String pharmacyName;
+
+    public ClaimRequestDto() {
+    }
 
     public Long getMemberId() {
         return memberId;
