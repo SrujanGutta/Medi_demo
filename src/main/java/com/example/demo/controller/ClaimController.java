@@ -59,18 +59,21 @@ public class ClaimController {
         if (member == null) {
             return new ResponseEntity<>("Member not found", HttpStatus.NOT_FOUND);
         }
-        if (!status.equals("SUBMITTED") || !status.equals("APPROVED") || !status.equals("DENIED")) {
+        if (status.equals("SUBMITTED") || status.equals("APPROVED") || status.equals("DENIED")) {
+            Claim claim = new Claim();
+            claim.setMember(member);
+            claim.setClaim_date(claimRequestDto.getClaimDate());
+            claim.setStatus(claimRequestDto.getStatus());
+            claim.setMedication(claimRequestDto.getMedication());
+            claim.setPharmacy_name(claimRequestDto.getPharmacyName());
+            claimRepository.save(claim);
+            return new ResponseEntity<>("Claim added successfully", HttpStatus.CREATED);
+        }
+        else {
             return new ResponseEntity<>("Claims can only have status 'SUBMITTED', 'APPROVED', or 'DENIED'", HttpStatus.BAD_REQUEST);
         }
-        Claim claim = new Claim();
-        claim.setMember(member);
-        claim.setClaim_date(claimRequestDto.getClaimDate());
-        claim.setStatus(claimRequestDto.getStatus());
-        claim.setMedication(claimRequestDto.getMedication());
-        claim.setPharmacy_name(claimRequestDto.getPharmacyName());
-        claimRepository.save(claim);
-        return new ResponseEntity<>("Claim added successfully", HttpStatus.CREATED);
     }
+
     @Operation(summary = "Update the status of a claim")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Claim status updated successfully"),

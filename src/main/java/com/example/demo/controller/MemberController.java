@@ -40,23 +40,18 @@ public class MemberController {
         return new ResponseEntity<>(members, HttpStatus.OK);
     }
 
-    @Operation(summary = "Update an existing member")
+    @Operation(summary = "Create a new member")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Member updated successfully"),
-            @ApiResponse(responseCode = "404", description = "Member not found")
+            @ApiResponse(responseCode = "201", description = "Member created successfully"),
+            @ApiResponse(responseCode = "409", description = "Member already exists with the given ID")
     })
     @PutMapping("/members/{id}")
-    public ResponseEntity<Member> updateMember(@PathVariable Long id, @RequestBody Member newMember) {
-        return memberRepository.findById(id)
-                .map(member -> {
-                    member.setFirst_name(newMember.getFirst_name());
-                    member.setLast_name(newMember.getLast_name());
-                    member.setPhone_number(newMember.getPhone_number());
-                    member.setDob(newMember.getDob());
-                    member.setDemographics(newMember.getDemographics());
-                    Member updatedMember = memberRepository.save(member);
-                    return new ResponseEntity<>(updatedMember, HttpStatus.OK);
-                })
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public ResponseEntity<Member> updateMember(@RequestBody Member newMember) {
+        Long memberId = newMember.getId();
+        if (memberRepository.existsById(memberId)) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+        Member createdMember = memberRepository.save(newMember);
+        return new ResponseEntity<>(createdMember, HttpStatus.CREATED);
     }
 }
